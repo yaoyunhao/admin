@@ -22,6 +22,7 @@
     <el-pagination
       :current-page="current"
       @current-change="handleChange"
+      background
       :pager-count="13"
       layout="prev,pager,next"
       :total="100"
@@ -119,14 +120,33 @@ export default {
   methods: {
     ...mapActions({
       getUserList: "list/getUserList",
-      updateUserInfo: "list/updateUserInfo"
+      updateUserInfo: "list/updateUserInfo",
+      deleteUser:'list/deleteUser'
     }),
     handleEdit(index, row) {
       console.log("index...", index, row);
       this.currentUser = { ...row };
       this.showDialog = true;
     },
-    handleDelete(index, row) {},
+    handleDelete(index, row) {
+      let {id} = row;
+       this.deleteUser({uid:id})
+            .then(res => {
+              this.$message({
+                message: res,
+                center: true,
+                type: "success"
+              });
+              this.getUserList({ page: this.current });
+            })
+            .catch(err => {
+              this.$message({
+                message: err,
+                center: true,
+                type: "error"
+              });
+            });
+    },
     handleClose() {
       this.showDialog = false;
     },

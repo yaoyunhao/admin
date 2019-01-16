@@ -1,4 +1,4 @@
-import { getUserList, updateUserInfo } from '@/api/user';
+import { getUserList, updateUserInfo, deleteUser } from '@/api/user';
 const state = {
     list: []
 };
@@ -8,6 +8,7 @@ const mutations = {
     }
 };
 const actions = {
+    //获取用户列表
     getUserList({ commit }, query) {
         return new Promise((resolve, reject) => {
             getUserList(query).then(res => {
@@ -22,9 +23,25 @@ const actions = {
             })
         })
     },
+    //更新用户信息
     updateUserInfo({ commit }, data) {
         return new Promise((resolve, reject) => {
             updateUserInfo(data).then(res => {
+                if (res.data.code == 1) {
+                    resolve(res.data.msg);
+                } else {
+                    reject(res.data.msg);
+                }
+            }).catch(err => {
+                reject(err);
+            })
+        })
+    },
+    //删除用户
+    deleteUser({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            deleteUser(data).then(res => {
+                console.log(data);
                 if (res.data.code == 1) {
                     resolve(res.data.msg);
                 } else {
