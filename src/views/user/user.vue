@@ -159,7 +159,8 @@ export default {
     ...mapActions({
       getUserList: "list/getUserList",
       updateUserInfo: "list/updateUserInfo",
-      deleteUser: "list/deleteUser"
+      deleteUser: "list/deleteUser",
+      modifyRoler: "list/modifyRoler"
     }),
     handleEdit(index, row) {
       console.log("index...", index, row);
@@ -204,33 +205,57 @@ export default {
       let index = this.myRolers.findIndex(item => item == roler);
       this.myRolers.splice(index, 1);
     },
-    addRoler(roler){
+    addRoler(roler) {
       this.myRolers.push(roler);
-      this.myRolers=[...new Set(this.myRolers)];//去重
+      this.myRolers = [...new Set(this.myRolers)]; //去重
     },
     submit() {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          let { id, username, profile, email, phone } = this.currentUser;
-          this.updateUserInfo({ id, username, profile, email, phone })
-            .then(res => {
-              this.$message({
-                message: res,
-                center: true,
-                type: "success"
+      if (this.type == "edit") {
+        this.$refs.form.validate(valid => {
+          if (valid) {
+            let { id, username, profile, email, phone } = this.currentUser;
+            this.updateUserInfo({ id, username, profile, email, phone })
+              .then(res => {
+                this.$message({
+                  message: res,
+                  center: true,
+                  type: "success"
+                });
+                this.getUserList({ page: this.current });
+              })
+              .catch(err => {
+                this.$message({
+                  message: err,
+                  center: true,
+                  type: "error"
+                });
               });
-              this.getUserList({ page: this.current });
-            })
-            .catch(err => {
-              this.$message({
-                message: err,
-                center: true,
-                type: "error"
-              });
+            this.showDialog = false;
+          }
+        });
+      } else if (this.type == "roler") {
+        let {id} =this.currentUser;
+        let rolersId= this.myRolers.map(item=>{
+          return this.rolers.findIndex(value=>value==item)+1
+        })
+        this.modifyRoler({uid:id,rolersId})
+          .then(res => {
+            this.$message({
+              message: res,
+              center: true,
+              type: "success"
             });
-          this.showDialog = false;
-        }
-      });
+            this.getUserList({ page: this.current });
+          })
+          .catch(err => {
+            this.$message({
+              message: err,
+              center: true,
+              type: "error"
+            });
+          });
+        this.showDialog = false;
+      }
     }
   }
 };
