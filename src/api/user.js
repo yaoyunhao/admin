@@ -24,3 +24,4 @@ export function deleteUser(data) {
         data
     })
 }
+//
