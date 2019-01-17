@@ -1,23 +1,38 @@
 <template>
     <div>
-        <h1>{{this.$route.path}}</h1>
-        <div class="block">
-            <el-tree
-                :data="newData"
-                show-checkbox
-                node-key="id"
-                default-expand-all
-                :expand-on-click-node="false"
-            >
-                <span class="custom-tree-node" slot-scope="{ node, data }">
-                    <span>{{ node.data.name }}</span>
-                    <span>
-                        <el-button type="text" size="mini" v-permission="['admin']" @click="() => append(data)">Append</el-button>
-                        <el-button type="text" size="mini" v-permission="['admin']" @click="() => remove(node, data)">Delete</el-button>
-                    </span>
+        <el-tree
+            :data="newData"
+            show-checkbox
+            node-key="id"
+            ref="tree"
+            default-expand-all
+            :expand-on-click-node="false"
+        >
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+                <span>{{ node.data.name }}</span>
+                <span>
+                    <el-button
+                        type="text"
+                        size="mini"
+                        v-permission="['admin']"
+                        @click="() => append(node,data)"
+                    >Append</el-button>
+                    <el-button
+                        type="text"
+                        size="mini"
+                        v-permission="['admin']"
+                        @click="() => remove(node, data)"
+                    >Delete</el-button>
                 </span>
-            </el-tree>
-        </div>
+            </span>
+        </el-tree>
+        <el-dialog title="添加职位" :visible.sync="dialogVisible" width="30%">
+            <el-input type="text" placeholder="请输入你要添加的职位" v-model="temp" />
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleSubmit">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -25,6 +40,9 @@ export default {
   data() {
     return {
       newData: [],
+      current:{},
+      temp:'',
+      dialogVisible:false,
       organize: [
         {
           id: 1,
@@ -164,8 +182,28 @@ export default {
         }
       });
     },
-    append(data){
-        console.log(data);
+    append(node,data) {
+      this.dialogVisible=true;
+      this.current={
+          node,
+          data
+      }
+    },
+    remove(node,data){
+        this.$refs.tree.remove(node);
+    },
+    handleSubmit(){
+        if(this.temp){
+            let newData={
+                id:this.organize[this.organize.length-1].id+1,
+                name:this.temp,
+                parentid:this.current.data.id
+            }
+            this.organize.push(newData);
+            this.$refs.tree.append(newData,this.current.node);
+            this.dialogVisible=false;
+            this.temp='';
+        }
     }
   },
   created() {
