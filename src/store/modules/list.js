@@ -41,7 +41,6 @@ const actions = {
     deleteUser({ commit }, data) {
         return new Promise((resolve, reject) => {
             deleteUser(data).then(res => {
-                console.log(data);
                 if (res.data.code == 1) {
                     resolve(res.data.msg);
                 } else {
@@ -56,7 +55,6 @@ const actions = {
     modifyRoler(context, data) {
         return new Promise((resolve, reject) => {
             modifyRoler(data).then(res => {
-                console.log(data);
                 if (res.data.code == 1) {
                     resolve(res.data.msg);
                 } else {
