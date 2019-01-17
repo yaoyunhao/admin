@@ -26,23 +26,24 @@ import './permission' // permission control
 import './mock' // simulation data
 // 引入自定义过滤器
 import * as filters from './filters' // global filters
+import './directive/permission/index';
 // 使用element-ui
 Vue.use(Element, {
-  size: Cookies.get('size') || 'medium', // set element-ui default size
-  i18n: (key, value) => i18n.t(key, value)
-})
-// 挂载全局自定义过滤器
-// register global utility filters.
+        size: Cookies.get('size') || 'medium', // set element-ui default size
+        i18n: (key, value) => i18n.t(key, value)
+    })
+    // 挂载全局自定义过滤器
+    // register global utility filters.
 Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
-})
-// 去掉生成环境提示
+        Vue.filter(key, filters[key])
+    })
+    // 去掉生成环境提示
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  i18n,
-  render: h => h(App)
+    el: '#app',
+    router,
+    store,
+    i18n,
+    render: h => h(App)
 })
