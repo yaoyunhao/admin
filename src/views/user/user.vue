@@ -7,6 +7,11 @@
           <img :src="scope.row.avatar" alt="" style="width:100%">
         </template>
       </el-table-column>
+      <el-table-column label="创建时间" width="110">
+        <template slot-scope="scope">
+          <span>{{scope.row.create_time | formatDate}}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="username" label="姓名" width="100"></el-table-column>
       <el-table-column prop="profile" label="简介" width="150"></el-table-column>
       <el-table-column prop="phone" label="手机号" width="120"></el-table-column>

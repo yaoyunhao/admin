@@ -37,6 +37,18 @@ Vue.use(Element, {
 Object.keys(filters).forEach(key => {
         Vue.filter(key, filters[key])
     })
+    // 日期格式化过滤器
+Vue.filter('formatDate', function(val) {
+        let date = new Date();
+        date.setTime(val);
+        let year = date.getFullYear(),
+            month = (date.getMonth() + 1).toString().padStart(2, '0'),
+            day = date.getDay().toString().padStart(2, '0'),
+            hour = date.getHours().toString().padStart(2, '0'),
+            min = date.getMinutes().toString().padStart(2, '0'),
+            sec = date.getSeconds().toString().padStart(2, '0');
+        return `${year}--${month}--${day} ${hour}:${min}:${sec}`
+    })
     // 去掉生成环境提示
 Vue.config.productionTip = false
 
