@@ -32,7 +32,7 @@ const organizeRouter = {
     }, {
         path: 'commit',
         component: () =>
-            import ('@/views/user/index'),
+            import ('@/views/user/commit'),
         name: 'Commit',
         meta: { title: 'Commit', roles: ['commit'] }
     }, {

@@ -1,11 +1,13 @@
 import { getUserList, updateUserInfo, deleteUser, modifyRoler } from '@/api/user';
 const state = {
-    list: []
+    list: [],
+    commit: []
 };
 const mutations = {
     updataList(state, list) {
         state.list = list;
-    }
+    },
+
 };
 const actions = {
     //获取用户列表
@@ -64,7 +66,8 @@ const actions = {
                 reject(err);
             })
         })
-    }
+    },
+
 }
 
 export default {

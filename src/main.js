@@ -27,6 +27,9 @@ import './mock' // simulation data
 // 引入自定义过滤器
 import * as filters from './filters' // global filters
 import './directive/permission/index';
+// 引入挂载echarts 
+import VCharts from 'v-charts'
+Vue.use(VCharts);
 // 使用element-ui
 Vue.use(Element, {
         size: Cookies.get('size') || 'medium', // set element-ui default size
