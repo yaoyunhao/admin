@@ -26,7 +26,7 @@ const organizeRouter = {
     }, {
         path: 'review',
         component: () =>
-            import ('@/views/user/index'),
+            import ('@/views/user/review'),
         name: 'Review',
         meta: { title: 'Review', roles: ['review'] }
     }, {
