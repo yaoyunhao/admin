@@ -65,7 +65,12 @@
           <el-input v-model="currentUser.username"></el-input>
         </el-form-item>
         <el-form-item v-if="type=='edit'" label="头像">
-          <el-upload action="123" class="avatar-uploader" :show-file-list="false">
+          <el-upload
+            action="http://123.206.55.50:11000/upload"
+            :on-success="uploadImg"
+            class="avatar-uploader"
+            :show-file-list="false"
+          >
             <img v-if="currentUser.avatar" :src="currentUser.avatar" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
@@ -214,12 +219,30 @@ export default {
       this.myRolers.push(roler);
       this.myRolers = [...new Set(this.myRolers)]; //去重
     },
+    uploadImg(res, file, fileList) {
+      if (res.code == 1) {
+        this.currentUser.avatar = res.data[0].path;
+      } else {
+        this.$message({
+          message: res.msg,
+          center: true,
+          type: "success"
+        });
+      }
+    },
     submit() {
       if (this.type == "edit") {
         this.$refs.form.validate(valid => {
           if (valid) {
-            let { id, username, profile, email, phone } = this.currentUser;
-            this.updateUserInfo({ id, username, profile, email, phone })
+            let {
+              id,
+              avatar,
+              username,
+              profile,
+              email,
+              phone
+            } = this.currentUser;
+            this.updateUserInfo({ id, avatar, username, profile, email, phone })
               .then(res => {
                 this.$message({
                   message: res,
@@ -239,11 +262,11 @@ export default {
           }
         });
       } else if (this.type == "roler") {
-        let {id} =this.currentUser;
-        let rolersId= this.myRolers.map(item=>{
-          return this.rolers.findIndex(value=>value==item)+1
-        })
-        this.modifyRoler({uid:id,rolersId})
+        let { id } = this.currentUser;
+        let rolersId = this.myRolers.map(item => {
+          return this.rolers.findIndex(value => value == item) + 1;
+        });
+        this.modifyRoler({ uid: id, rolersId })
           .then(res => {
             this.$message({
               message: res,
