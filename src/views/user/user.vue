@@ -1,6 +1,12 @@
 <template>
   <div>
-     <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="document" @click="handleDownload">{{ $t('excel.export') }} Excel</el-button>
+    <el-button
+      :loading="downloadLoading"
+      style="margin:0 0 20px 20px;"
+      type="primary"
+      icon="document"
+      @click="handleDownload"
+    >{{ $t('excel.export') }} Excel</el-button>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="id" label="ID" width="60"></el-table-column>
       <el-table-column label="头像" width="80">
@@ -144,7 +150,7 @@ export default {
     return {
       current: 1,
       currentUser: {},
-      downloadLoading:false,
+      downloadLoading: false,
       rolers: ["boss", "developer", "producter", "operator", "designer"],
       myRolers: [],
       showDialog: false,
@@ -175,7 +181,6 @@ export default {
       modifyRoler: "list/modifyRoler"
     }),
     handleEdit(index, row) {
-      console.log("index...", index, row);
       this.type = "edit";
       this.currentUser = { ...row };
       this.showDialog = true;
@@ -203,7 +208,6 @@ export default {
       this.showDialog = false;
     },
     handleChange(page) {
-      console.log("page...", page);
       this.current = page;
       this.getUserList({ page });
     },
@@ -287,22 +291,22 @@ export default {
         this.showDialog = false;
       }
     },
-handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
+    handleDownload() {
+      this.downloadLoading = true;
+      import("@/vendor/Export2Excel").then(excel => {
         const tHeader = Object.keys(this.tableData[0]);
-        const data = this.tableData.map(itm=>{
+        const data = this.tableData.map(itm => {
           return Object.values(itm);
-        })
+        });
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: '用户信息',
-          autoWidth:'true',
-          bookType: 'xlsx'
-        })
-        this.downloadLoading = false
-      })
+          filename: "用户信息",
+          autoWidth: "true",
+          bookType: "xlsx"
+        });
+        this.downloadLoading = false;
+      });
     }
   }
 };
